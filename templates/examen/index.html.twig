@@ -22,7 +22,7 @@
                 <td>{{ mesa.centro }}</td>
                 <td>{{ mesa.localidad }}</td>   
                 <td>
-                   <a href="{{ path('app_voto_edit', {'id': mesa.id}) }}">Datos</a>
+                   <a href="{{ path('actualizar_votos', {'mesa_id': mesa.id}) }}">Datos</a>
                 </td>
             </tr>
         {% else %}
