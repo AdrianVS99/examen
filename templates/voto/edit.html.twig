@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Voto{% endblock %}
+
+{% block body %}
+    <h1>Edit Voto</h1>
+
+    {{ include('voto/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_voto_index') }}">back to list</a>
+
+    {{ include('voto/_delete_form.html.twig') }}
+{% endblock %}

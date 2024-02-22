@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mesa index{% endblock %}
+
+{% block body %}
+    <h1>Mesa index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mesa</th>
+                <th>Centro</th>
+                <th>Localidad</th>
+                <th></th>
+            
+            </tr>
+        </thead>
+        <tbody>
+        {% for mesa in mesas %}
+            <tr>
+                <td>{{ mesa.mesa }}</td>
+                <td>{{ mesa.centro }}</td>
+                <td>{{ mesa.localidad }}</td>   
+                <td>
+                   <a href="{{ path('app_voto_edit', {'id': mesa.id}) }}">Datos</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">No se encuentran datos</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {# {% if app.user %}
+        <a href="{{ path('app_logout') }}">Logout</a>
+    {% endif %} #}
+
+{% endblock %}

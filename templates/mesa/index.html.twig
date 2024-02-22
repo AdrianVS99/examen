@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mesa index{% endblock %}
+
+{% block body %}
+    <h1>Mesa index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Mesa</th>
+                <th>Centro</th>
+                <th>Localidad</th>
+                <th>Oculta</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mesa in mesas %}
+            <tr>
+                <td>{{ mesa.id }}</td>
+                <td>{{ mesa.mesa }}</td>
+                <td>{{ mesa.centro }}</td>
+                <td>{{ mesa.localidad }}</td>
+                <td>{{ mesa.oculta ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_mesa_show', {'id': mesa.id}) }}">show</a>
+                    <a href="{{ path('app_mesa_edit', {'id': mesa.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_mesa_new') }}">Create new</a>
+{% endblock %}

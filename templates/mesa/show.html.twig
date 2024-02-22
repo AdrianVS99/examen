@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mesa{% endblock %}
+
+{% block body %}
+    <h1>Mesa</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ mesa.id }}</td>
+            </tr>
+            <tr>
+                <th>Mesa</th>
+                <td>{{ mesa.mesa }}</td>
+            </tr>
+            <tr>
+                <th>Centro</th>
+                <td>{{ mesa.centro }}</td>
+            </tr>
+            <tr>
+                <th>Localidad</th>
+                <td>{{ mesa.localidad }}</td>
+            </tr>
+          
+        </tbody>
+    </table>
+
+    
+
+    <a href="{{ path('app_mesa_edit', {'id': mesa.id}) }}">datos</a>
+
+    {{ include('mesa/_delete_form.html.twig') }}
+{% endblock %}

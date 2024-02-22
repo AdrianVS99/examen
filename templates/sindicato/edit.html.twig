@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Sindicato{% endblock %}
+
+{% block body %}
+    <h1>Edit Sindicato</h1>
+
+    {{ include('sindicato/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_sindicato_index') }}">back to list</a>
+
+    {{ include('sindicato/_delete_form.html.twig') }}
+{% endblock %}
