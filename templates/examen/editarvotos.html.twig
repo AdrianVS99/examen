@@ -1,13 +1,17 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Mesa index{% endblock %}
 
 {% block body %}
- {# <h1>Editar Votos de la Mesa {{ mesa.id }}</h1> #}
- <h1>Editar Votos</h1>
-    {{ form_start(form) }}
-    {{ form_row(form) }}
-    <button type="submit">Guardar</button>
-    {{ form_end(form) }}
-
+<h1>Editar Votos</h1>
+{{ form_start(form) }}
+{% for votoField in form %}
+    <div>
+        {{ form_label(votoField) }}
+        {{ form_widget(votoField) }}
+ 
+        {% for error in votoField.vars.errors %}
+            <span class="error">{{ error.message }}</span>
+        {% endfor %}
+    </div>
+{% endfor %}
+<button type="submit">Guardar</button>
+{{ form_end(form) }}
 {% endblock %}

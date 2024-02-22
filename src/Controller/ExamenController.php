@@ -13,60 +13,69 @@ use App\Entity\Sindicato;
 use App\Entity\Voto;
 use App\Form\VotoType;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints\Regex;
+
 
 class ExamenController extends AbstractController
 {
     #[Route('/elecciones', name: 'elecciones')]
     #[Route('/', name: 'app_mesa_index', methods: ['GET'])]
-    // #[Security('is_granted("ROLE_USER")')]
-    // #[IsGranted("ROLE_USER")]
+
     
 
-    public function index(MesaRepository $mesaRepository): Response
+    public function index(MesaRepository $mesaRepository, EntityManagerInterface $entityManager,PaginatorInterface $paginator, Request $request): Response
     {
+        $query = $entityManager->getRepository(Mesa::class)->createQueryBuilder('m')
+            ->orderBy('m.id', 'ASC')
+            ->getQuery();
+
+        $pagination = $paginator->paginate(
+            $query, 
+            $request->query->getInt('page', 1), 
+             2
+        );
+
         return $this->render('examen/index.html.twig', [
-            'mesas' => $mesaRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 
   
     #[Route('/editar/{mesa_id}', name: 'actualizar_votos')]
-    public function editarVotos(Request $request, EntityManagerInterface $entityManager, int $mesa_id): Response
+    public function editarVotos(Request $request, EntityManagerInterface $entityManager,ValidatorInterface $validator, int $mesa_id): Response
     {
-        // $entityManager = $this->getDoctrine()->getManager();
+    
 
         $mesa = $entityManager->getRepository(Mesa::class)->find($mesa_id);
 
-        // Obtener los votos asociados a la mesa
+     
         $votos = $mesa->getVotos();
     
-        // Crear el formulario
+   
         $form = $this->createForm(VotosType::class, null, ['votos' => $votos]);
     
-        // Manejar el envío del formulario
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // Procesar los datos del formulario y guardarlos en la base de datos
+       
             foreach ($votos as $voto) {
                 $votoId = $voto->getId();
                 $newVotesCount = $form->get($votoId)->getData();
+
                 $voto->setVotos($newVotesCount);
                 $entityManager->persist($voto);
             }
             $entityManager->flush();
     
-            // Redirigir al usuario a alguna parte, como la página de detalles de la mesa
+   
             return $this->redirectToRoute('elecciones');
         }
     
-        // Renderizar la vista Twig con el formulario
+    
         return $this->render('examen/editarvotos.html.twig', [
             'form' => $form->createView(),
             'votos' => $votos,
